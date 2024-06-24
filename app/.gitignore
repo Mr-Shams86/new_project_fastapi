@@ -1,0 +1,8 @@
+env/
+test.db
+.idea
+*.pyc
+__pycache__/
+*.log
+.dockerignore
+.env

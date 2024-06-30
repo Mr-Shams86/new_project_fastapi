@@ -58,18 +58,18 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
     access_token = create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
 
-@app.get("/users/me", response_model=schemas.User)
-#def read_users_me(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
-    #token_data = decode_access_token(token)
-def read_users_me(authorization: str | None = Header(default=None), db: Session=Depends(get_db)):
-    authorization = authorization.split(' ')[1]
-    token_data = decode_access_token(authorization)    
-    if token_data is None:
-        raise HTTPException(status_code=401, detail="Invalid authentication credentials")
-    user = crud.get_user_by_username(db, username=token_data.username)
-    if user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return user        
+# @app.get("/users/me", response_model=schemas.User)
+# #def read_users_me(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+#     #token_data = decode_access_token(token)
+# def read_users_me(authorization: str | None = Header(default=None), db: Session=Depends(get_db)):
+#     authorization = authorization.split(' ')[1]
+#     token_data = decode_access_token(authorization)    
+#     if token_data is None:
+#         raise HTTPException(status_code=401, detail="Invalid authentication credentials")
+#     user = crud.get_user_by_username(db, username=token_data.username)
+#     if user is None:
+#         raise HTTPException(status_code=404, detail="User not found")
+#     return user        
 
 @app.get("/users/me", response_model=schemas.User)
 def read_users_me(authorization: str = Header(None), db: Session = Depends(get_db)):

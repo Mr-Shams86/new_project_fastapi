@@ -13,6 +13,7 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def verify_password(plain_password, hashed_password):
+    print(f"Verifying password: {plain_password} againts hash: {hashed_password}")
     return pwd_context.verify(plain_password, hashed_password)
 
 def get_password_hash(password):
@@ -31,10 +32,12 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 def decode_access_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        print(f"Decoded payload: {payload}")
         username: str = payload.get("sub")
         if username is None:
             return None
         return TokenData(username=username)
-    except JWTError:
+    except JWTError as e:
+        print(f"JWT Error: {e}")
         return None
             

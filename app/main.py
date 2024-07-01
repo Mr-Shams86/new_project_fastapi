@@ -73,8 +73,8 @@ def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(), db:
 
 @app.get("/users/me", response_model=schemas.User)
 def read_users_me(authorization: str = Header(None), db: Session = Depends(get_db)):
-    if authorization is None:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authorization header is required")
+    if authorization is None or ' ' not in authorization:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid authorization header format")
     
     try:
         token = authorization.split(' ')[1]

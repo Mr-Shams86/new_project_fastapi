@@ -1,5 +1,24 @@
 from pydantic import BaseModel
+from pydantic import HttpUrl
+from typing import List
 from typing import Optional
+
+class PostBase(BaseModel):
+    title: str
+    content: str
+    image_url: HttpUrl
+    
+class PostCreate(PostBase):
+    pass    
+
+class Post(PostBase):
+    id: int
+    author_id: int
+    
+    class Config:
+        orm_mode = True
+        
+        
 
 class UserBase(BaseModel):
     username: str
@@ -12,6 +31,7 @@ class UserCreate(UserBase):
     
 class User(UserBase):
     id: int
+    posts: List[Post] = []
     
     class Config:
         orm_mode = True

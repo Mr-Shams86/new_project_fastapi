@@ -97,7 +97,11 @@ async def read_posts(skip: int = 0, limit: int = 10, db: Session = Depends(get_d
 
 @app.post("/uploadfile/")
 async def create_upload_file(file: UploadFile = File(...)):
-    file_location = f"app/static/images/{file.filename}"
+    # Определяем путь к директории
+    media_dir = "app/static/images"
+    # Создаем директорию, если её нет
+    os.makedirs(media_dir, exist_ok=True)
+    file_location = os.path.join(media_dir, file.filename)
     with open(file_location, "wb+") as file_object:
         file_object.write(file.file.read())
     return {"info": f"file '{file.filename}' saved at '{file_location}'"}
